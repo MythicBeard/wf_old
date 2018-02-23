@@ -1,0 +1,440 @@
+/* Reset Everything */
+*, *:before, *:after {-moz-box-sizing:border-box; -webkit-box-sizing:border-box; box-sizing:border-box; padding:0; margin:0;}
+a img {border:none;}
+//a:active {color:black; text-decoration:none;}
+//a:visited {color:black; text-decoration:none;}
+//a:hover {color:black; text-decoration:none;}
+//a:active {color:black; text-decoration:none;}
+html {
+    overflow: -moz-scrollbars-vertical; 
+    overflow-y: scroll;
+}
+
+/* Nix the mobile "smart" resizing */
+div, p, a, ul, li, tr, td, img {
+	-webkit-text-size-adjust:none !important;
+	text-size-adjust:none !important;
+}
+	
+
+/* Links */
+a:hover, a:focus {
+    //text-decoration: underline;
+    //color: #ffe981;
+}
+
+a:visited {
+    color: rgb(60, 180, 255);
+    //text-decoration: none;
+}
+
+a:link {
+    color: rgb(60, 180, 255);
+    text-decoration: underline;
+}
+
+/* Background */
+body {
+	height: 100%;
+	background-color: whitesmoke;
+	margin: 0px;
+	   background-image: url(bg-body.jpg);
+    background-repeat: no-repeat;
+    background-position: center bottom;
+	background-attachment: fixed;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size: 18px;
+	color: whitesmoke;
+	text-shadow: 1.5px 1.5px 2px black;
+}
+
+#wrap {
+	min-width: 1200px;
+	min-height: 100%;
+	margin: 0px auto;
+}
+
+
+/* Header */
+#header {
+	position: fixed;
+	top: 0px;
+	z-index: 10;
+	height: 80px;
+	//line-height: 80px;
+	width: 100%;
+	margin: 0px auto;
+	text-align: center;
+	background: rgba(0,0,0,0.8);
+	font-size: 24px;
+	color: whitesmoke;
+	font-weight: 900;
+	padding-top: 25px; /* change this */
+	transition: all .1s;
+}
+
+#header #icons {
+	height: inherit;
+	width: 1080px;
+	position: absolute;
+	top: 30px; /* change this */
+	left: 50%;
+	margin-left: -540px;
+	text-shadow: 1px 1px 0px darkgrey;
+	transition: all .1s;
+}
+
+#header #sound {
+	position: absolute;
+	left: 50px;
+	z-index: 12;
+	cursor: pointer;
+	color: rgba(0, 105, 0, 1);
+	transition: all .1s;
+}
+
+#header #refresh {
+	position: absolute;
+	right: 50px;
+	z-index: 12;
+	cursor: pointer;
+	color: rgba(185, 185, 0, 1);
+	transition: all .1s;
+}
+
+#header img {
+	height: 40px;
+	transition: all .25s;
+	vertical-align: middle;
+}
+
+
+/* Main */
+#main {
+	width: 1080px;
+	min-height: 500px;
+	position: relative;
+	top: 80px;
+	margin: 0px auto;
+	text-align: center;
+	//border-top: 2px solid green;
+}
+
+#footer {
+	position: relative;
+	bottom: 0px;
+	height: 80px;
+	padding: 15px 0px;
+	width: 100%;
+	margin: 90px auto 0px;
+	background: rgba(0,0,0,0.8);
+	text-align: center;
+	font-size: 14px;
+}
+
+
+.info_box {
+	display: inline-block;
+	vertical-align: top;
+	margin: 12px;
+	border: 1px solid whitesmoke;
+	box-shadow: 2px 2px 0px rgb(85,85,85), 3px 3px 0px gainsboro;
+	background: rgba(0, 0, 0, 0.6);
+	padding: 10px;
+	color: white;
+	text-align: center;
+	font-size: 16px;
+	line-height: 22px;
+}
+
+.info_title {
+	width: 100%;
+	margin: 0px auto 8px;
+	padding-bottom: 6px;
+	border-bottom: 1px solid whitesmoke;
+	font-size: 20px;
+	font-weight: 700;
+	//color: rgb(255, 230, 180);
+}
+
+.double_stack {display: inline-block;}
+
+/*
+.effectScale {
+  border: none;
+  margin: 0 auto;
+}
+.effectScale:hover {
+  -webkit-transform: scale(3);
+  -moz-transform: scale(3);
+  -o-transform: scale(3);
+  transform: scale(3);
+  transition: all 0.3s;
+  -webkit-transition: all 0.3s;
+}
+*/
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+/* ----- Sorties ----- */
+#sorties {
+	width: 270px;
+}
+
+
+/* ----- Rep ----- */
+#rep {
+	width: 270px;
+}
+
+
+/* ----- Cetus Cycle -----*/
+#cetusCycle {
+	width: 370px;
+	min-height: 90px;
+	font-size: 18px;
+}
+
+#sundial {
+	display: inline-block;
+	position: absolute;
+	left: 50%;
+	z-index: 4;
+	width: 50px; 
+	margin-left: -25px;
+	margin-top: -2px;
+	text-align: center;
+}
+
+#cetusCycle #time {
+	display: inline-block;
+	width: 120px;
+	margin-right: 30px;
+	margin-top: 5px;
+	text-align: right;
+}
+
+#cetusCycle #left {
+	display: inline-block;
+	width: 120px;
+	margin-left: 30px;
+	text-align: left;
+}
+
+#cetusCycle img {
+	//vertical-align: -8px;
+}
+
+
+
+/* ----- Daily Deals -----*/
+#dailyDeals {
+	width: 460px;
+	min-height: 77px;
+}
+
+#dailyDeals table {
+	width: 100%;
+	color: whitesmoke;
+}
+
+.dv_item {text-align: left;}
+.dv_price {width: 130px; text-align: right;}
+.dv_sold {width: 75px; text-align: right;}
+.dv_time {width: 80px; text-align: right;}
+
+
+/* ----- Void Trader ----- */
+#voidTrader {
+	width: 460px;
+}
+
+
+/* ----- Events ----- */
+#events {
+	width: 980px;
+}
+
+#events #info {
+	width: 100%;
+	border-collapse: separate;
+    border-spacing: 0px 6px;
+}
+
+#events #info tr {
+	padding: 3px 0px;
+	box-shadow: 0px 0px 2px black;
+}
+
+.evt_name {
+	width: 320px;
+	padding-left: 5px;
+}
+.evt_reward {
+	text-align: center;
+}
+.evt_reward img {
+	width: 35px;
+	vertical-align: -6px;
+	margin-right: 8px;
+}
+.evt_eta {
+	width: 320px;
+	text-align: right;
+	padding-right: 5px;
+}
+
+
+/* ----- Alerts ----- */
+#alerts {
+	width: 500px;
+}
+
+#alerts #info {width: 100%;}
+
+#alerts tr {height: 60px; line-height: 22px;}
+
+#alerts .thumb {width: 45px;}
+
+.al_icon {width: 55px; text-align: left;}
+.al_reward {text-align: left;}
+.al_mission {width: 100px; text-align: center;}
+.al_spacer {height: 1px !important; background: rgb(110,110,110);}
+
+
+/* ----- Fissures ----- */
+#fissures {
+	width:500px;
+}
+
+#fissures #info {
+	width: 100%;
+	border-collapse: separate;
+    border-spacing: 0px 6px;
+}
+
+.fs_tier {
+	width: 50px;
+	text-align: center;
+}
+
+.fs_type {
+	width: 160px;
+	padding-left: 8px;
+	text-align: left;
+}
+
+.fs_eta {
+	width: 100px;
+	text-align: center;
+}
+
+.fs_node {
+	text-align: right;
+	padding-right: 8px;
+}
+
+.fs_spacer {height: 1px !important; background: rgb(110,110,110);}
+
+
+/* ----- Invasions ----- */
+#invasions {
+	width: 980px;
+}
+
+#invasions #info {
+	width: 100%;
+	border-collapse: separate;
+    border-spacing: 0px 4px;
+}
+
+.inv_atk {position: relative; float: left; z-index: 2;}
+.inv_def {position: relative; float: right; z-index: 2;}
+
+.inv_reward {
+	position: relative;
+	padding: 3px 0px;
+	box-shadow: 0px 0px 2px black;
+}
+
+#invasions img {padding: 0px 2px; width: 30px;}
+
+.inv_prog {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 0%;
+	height: 100%;
+	z-index: 1;
+	box-shadow: 0px 0px 2px black;
+}
+
+.inv_Corpus {background: rgba(0, 0, 105, 1);}
+.inv_Grineer {background: rgba(0, 105, 0, 1);}
+.inv_Infested {background: rgba(105, 0, 0, 1);}
+
+.inv_node {
+	display: inline-block;
+	position: absolute;
+	left: 50%;
+	z-index: 4;
+	width: 300px; 
+	margin-left: -150px;
+	text-align: center;
+}
+
+
+/* ----- News ----- */
+#news {
+	width: 500px;
+}
+
+#news #info {
+	width: 100%;
+	border-collapse: separate;
+    border-spacing: 0px 12px;
+	text-align: center;
+}
+
+#news #info td {font-size: 14px;}
+#news a:visited {color: rgb(255,60,255);}
+
+
+/* ----- Market ----- */
+#market {
+	width: 500px;
+}
+
+#market #info {
+	width: 100%;
+}
+
+.sale_item {text-align: left;}
+.sale_price {width: 100px; text-align: center;}
+.sale_eta {width: 125px; text-align: right;}
+
+
+/* ----- Simaris ----- */
+#simaris {
+	width: 666px;
+}
+
+#simaris #info {
+	width: 82%;
+	margin: 0px auto;
+}
+
+.simar_active {
+	width: 80px;
+	text-align: right;
+}
+
+
+/* ----- Conclave ----- */
+#conclave {
+	width: 300px;
+	text-align: center;
+	font-size: 14px;
+}
+
