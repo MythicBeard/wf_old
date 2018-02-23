@@ -52,8 +52,11 @@ $.getJSON('https://ws.warframestat.us/pc', function (data) {
 	// Sorties
 	var sortie = {
 		'hr': wf.sortie.eta.match(new RegExp("\\d+h")),
-		'mn': wf.sortie.eta.match(new RegExp("\\d+m")),
 	};
+	if (wf.sortie.eta.match(new RegExp("\\d+m")))
+		sortie.mn = wf.sortie.eta.match(new RegExp("\\d+m"));
+	else
+		sortie.mn = '0m';
 	sortie.hr = Number(sortie.hr[0].replace('h', ''));
 	sortie.mn = sortie.mn[0].replace('m', '');
 	$('#sorties #left').html(sortie.hr+'h '+sortie.mn+'m');

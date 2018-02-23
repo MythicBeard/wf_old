@@ -134,6 +134,8 @@ body {
 
 
 .info_box {
+	position: relative;
+	z-index:5;
 	display: inline-block;
 	vertical-align: top;
 	margin: 12px;
@@ -438,3 +440,35 @@ body {
 	font-size: 14px;
 }
 
+.volm {}
+
+#volm_left {
+	position: absolute;
+	top: 55px;
+	left: -55px;
+	opacity: .8;
+}
+
+#volm_right {
+	position: absolute;
+	top: 605px;
+	right: -55px;
+	opacity: .8;
+}
+
+#harka {
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+	z-index: 6;
+	opacity: .9;
+}
+
+#teralyst {
+	position: absolute;
+	bottom: 0px;
+	right: 0px;
+	z-index: 6;
+	opacity: .9;
+}
+	
