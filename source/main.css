@@ -48,6 +48,62 @@ body {
 	text-shadow: 1.5px 1.5px 2px black;
 }
 
+#preview_wrap {
+	height: 100%;
+	width: 100%;
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	z-index: 20;
+	background: rgba(0,0,0,0.75);
+	visibility: hidden;
+}
+
+#preview {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+	padding: 10px;
+	background: rgba(0,0,0,0.9);
+	border: 1px solid whitesmoke;
+	box-shadow: 2px 2px 0px rgb(85,85,85), 3px 3px 0px gainsboro;
+}
+
+#preview_esc {
+	height: 14px;
+	width: 30px;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	background: black;
+	border-right: 1px solid whitesmoke;
+	border-bottom: 1px solid whitesmoke;
+	line-height: 14px;
+	font-size: 12px;
+	text-align: center;
+	cursor: pointer;
+}
+
+#preview_close {
+	height: 30px;
+	width: 30px;
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	background: black;
+	border-left: 1px solid whitesmoke;
+	border-bottom: 1px solid whitesmoke;
+	//box-shadow: 0px 0px 1px rgb(85,85,85), 0px 0px 2px gainsboro;
+	line-height: 28px;
+	font-size: 20px;
+	font-weight: 900;
+	text-align: center;
+	cursor: pointer;
+}
+
+
+
 #wrap {
 	min-width: 1200px;
 	min-height: 100%;
@@ -89,7 +145,7 @@ body {
 	left: 50px;
 	z-index: 12;
 	cursor: pointer;
-	color: rgba(0, 105, 0, 1);
+	color: rgba(0, 155, 0, 1);
 	transition: all .1s;
 }
 
@@ -251,6 +307,19 @@ body {
 #voidTrader {
 	width: 460px;
 }
+
+#preview #info {
+	border-collapse: separate;
+    border-spacing: 0px 3px;
+}
+
+#preview .info_title {text-align: center;}
+#voidTrader #open {
+	cursor: pointer;
+}
+.vt_item {min-width: 25px; padding-right: 30px;}
+.vt_ducats {padding: 0px 5px;}
+.vt_credits {padding-left: 20px; text-align: left;}
 
 
 /* ----- Events ----- */

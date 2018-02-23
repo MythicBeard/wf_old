@@ -1,5 +1,15 @@
-var speech = {'queue':{}};
+/* ----- Speech ----- */
+var speech = {
+	'queue': {},
+};
 speech.voices = window.speechSynthesis.getVoices();
+speech.settings = {
+	'all': true,
+	'alerts': true,
+	'fissures': true,
+	'invasions': false,
+	'cetusalarm': true,
+};
 	
 speech.say = function (phrase) {
 	var synth = window.speechSynthesis;
@@ -41,6 +51,28 @@ speech.addqueue = function (phrase) {
 };
 
 
+/* ------ Tracking ----- */
+var track = {
+	'old': {
+		'alerts': {},
+		'fissures': {},
+		'invasions': {},
+	},
+	'tracking': {
+		'alerts': true,
+		'cetus': true,
+		'fissures': false,
+		'invasions': false,
+	},
+};
+
+track.alerts = function (alerts) {
+	console.log(alerts);
+};
+
+
+
+/* totop button */
 
 /* ---- Load Everything ----- */
 var get_data = function () {
@@ -88,26 +120,37 @@ $.getJSON('https://ws.warframestat.us/pc', function (data) {
 		deal.time = '<td class="dv_time">'+darvos[i].eta.replace(new RegExp("\\d+s","g"), '')+'</td>';
 		$('#dailyDeals #info').append('<tr>'+deal.item+deal.price+deal.sold+deal.time+'</tr>');
 	}
-	
-	
-	// Cephalon Simaris
-	$('#simaris #info tr').remove();
-	var simar = {
-		'target': wf.simaris.target,
-	}
-	if (wf.simaris.isTargetActive)
-		simar.active = "Active";
-	else
-		simar.active = "Inactive";
-	simar.html = '<td class="simar_target"><a href="https://steamcommunity.com/sharedfiles/filedetails/?id=666483447" target="_blank">'+simar.target+'</a></td><td class="simar_active">'+simar.active+'</td>';
-	$('#simaris #info').append('<tr>'+simar.html+'</tr>');
 
 
 	// Void Trader (Baro)
 	var vt = {};
-	if (wf.voidTrader.active) vt.active = 'Here for'; else vt.active = 'Arriving in';
+	console.log(wf.voidTrader);
+	if (wf.voidTrader.active) {
+		vt.active = ''; 
+		vt.left = wf.voidTrader.endString.replace(new RegExp("\\d+s","g"), '');
+		$('#voidTrader #open').html(' &nbsp;(click for inventory)');
+	}
+	else {
+		vt.active = 'Arriving in';
+		vt.left = wf.voidTrader.startString.replace(new RegExp("\\d+s","g"), '');
+	}
 	$('#voidTrader #active').html(vt.active);
-	$('#voidTrader #left').html(wf.voidTrader.startString.replace(new RegExp("\\d+s","g"), ''));
+	$('#voidTrader #left').html(vt.left);
+	// if inventory > 0
+	$('#preview #info tr').remove();
+	for (let i=0; i<wf.voidTrader.inventory.length; i++) {
+		var item = wf.voidTrader.inventory[i];
+		item.credits = item.credits.toString().replace(new RegExp("000$","g"), 'k');
+		item.credits = wf.voidTrader.inventory[i].credits.replace('000', ',000');
+		var html = '<td class="vt_item">'+item.item+'</td>'
+			+ '<td class="vt_ducats">'+item.ducats+'</td>'
+			+ '<td class="vt_credits">'+item.credits+'</td>'
+		;
+		$('#preview #info').append('<tr>'+html+'</tr>');
+		if (i < wf.voidTrader.inventory.length-1)
+			$('#preview #info').append('<tr class="al_spacer"><td colspan="3"></td></tr>');
+	}
+	
 
 
 	// Events
@@ -131,16 +174,15 @@ $.getJSON('https://ws.warframestat.us/pc', function (data) {
 	for (let i=0; i<wf.alerts.length; i++) {
 		var alr = {};
 		alr.icon_class = 'thumb effectScale';
-		//if (wf.alerts[i].rewardTypes[0] == 'aura')
-			//alr.icon_class += ' effectScale';
 		alr.icon = '<td class="al_icon"><img class="'+alr.icon_class+'" src="'+wf.alerts[i].mission.reward.thumbnail+'" alt=""></td>';
 		alr.reward = '<td class="al_reward">'+wf.alerts[i].mission.reward.asString.replace(new RegExp("\\+ \\d+cr","g"), '').replace('Blueprint', 'BP')+
 			'</br>'+wf.alerts[i].eta.replace(new RegExp("\\d+s","g"), '')+'</td>';
 		alr.mission = '<td class="al_mission">'+wf.alerts[i].mission.type+'</br>'+wf.alerts[i].mission.minEnemyLevel+'-'+wf.alerts[i].mission.maxEnemyLevel+'</td>';
 		$('#alerts #info').append('<tr>'+alr.icon+alr.reward+alr.mission+'</tr>');
 		if (i < wf.alerts.length-1)
-			$('#alerts #info').append('<tr class="al_spacer"><td colspan="3"</tr>');
+			$('#alerts #info').append('<tr class="al_spacer"><td colspan="3"></td></tr>');
 	}
+	track.alerts(wf.alerts);
 
 
 	// Fissures
@@ -228,11 +270,40 @@ $.getJSON('https://ws.warframestat.us/pc', function (data) {
 		;
 		$('#market #info').append('<tr>'+html+'</tr>');
 	}		
+
+
+	// Cephalon Simaris
+	$('#simaris #info tr').remove();
+	var simar = {
+		'target': wf.simaris.target,
+	}
+	if (wf.simaris.isTargetActive)
+		simar.active = "Active";
+	else
+		simar.active = "Inactive";
+	simar.html = '<td class="simar_target"><a href="https://steamcommunity.com/sharedfiles/filedetails/?id=666483447" target="_blank">'+simar.target+'</a></td><td class="simar_active">'+simar.active+'</td>';
+	$('#simaris #info').append('<tr>'+simar.html+'</tr>');
+
 	
-	$('#header #refresh').css('color', 'green');
+
+	$('#header #refresh').css('color', 'rgb(0,155,0)');
 });
 };
 get_data();
+
+// Preview Void Stuff
+var preview_close = function () {
+	$('#preview_wrap').css('visibility', 'hidden');
+};
+var preview_open = function () {
+	$('#preview_wrap').css('visibility', 'visible');
+};
+$(document).keydown(function(e) {
+    // ESCAPE key pressed
+    if (e.keyCode == 27) {
+        preview_close();
+    }
+});
 
 
 // Header shrink
