@@ -13,12 +13,14 @@ var scrollD = function () {
 	$('#header').css('height', '40px').css('padding-top', '3px').css('font-size', '20px');
 	$('#header #icons').css('top', '10px');
 	$('#header img').css('height', '30px');
+	//$('#help').css('top', '4px');
 };
 
 var scrollU = function () {
 	$('#header').css('height', '80px').css('padding-top', '25px').css('font-size', '24px');
 	$('#header #icons').css('top', '29px');
 	$('#header img').css('height', '40px');
+	//$('#help').css('top', '24px');
 };
 
 $(document).scroll(function(e) {
@@ -316,10 +318,15 @@ setTimeout(function () {
 /* ----- Top / Bottom ----- */
 
 $(window).scroll(function(){
+	$("#header").stop(true,false)
+	$("#header").css('top', ($(window).scrollTop()+0) + "px");
 	$("#collapse_all").css('top', ($(window).scrollTop()+300) + "px");
 	$("#expand_all").css('top', ($(window).scrollTop()+340) + "px");
   	$("#to_top").css('top', ($(window).scrollTop()+300) + "px");
 	$("#to_bottom").css('top', ($(window).scrollTop()+340) + "px");
+	$('#help').css('top', ($(window).scrollTop()+6) + "px");
+	if ($(window).scrollTop() <= 10)
+		$('#help').css('top', ($(window).scrollTop()+24) + "px");
 	//$('#to_top').stop().animate({'top': ($(window).scrollTop()+300) + 'px'}, 'fast');
 	//$('#to_bottom').stop().animate({'top': ($(window).scrollTop()+340) + 'px'}, 'fast');
 });
