@@ -232,7 +232,7 @@ $.getJSON('https://ws.warframestat.us/pc', function (data) {
 	if (wf.voidTrader.active) {
 		vt.active = ''; 
 		vt.left = wf.voidTrader.endString.replace(new RegExp("\\d+s","g"), '');
-		$('#voidTrader #open').html(' &nbsp;(click for inventory)');
+		$('#voidTrader #open').html(' &nbsp;(view inventory)');
 	}
 	else {
 		vt.active = 'Arriving in';
@@ -247,8 +247,8 @@ $.getJSON('https://ws.warframestat.us/pc', function (data) {
 		item.credits = item.credits.toString().replace(new RegExp("000$","g"), 'k');
 		item.credits = wf.voidTrader.inventory[i].credits.replace('000', ',000');
 		var html = '<td class="vt_item">'+item.item+'</td>'
-			+ '<td class="vt_ducats">'+item.ducats+'</td>'
-			+ '<td class="vt_credits">'+item.credits+'</td>'
+			+ '<td class="vt_ducats">'+item.ducats+'<img src="source/ducat.png"></td>'
+			+ '<td class="vt_credits">'+item.credits+'<img src="source/credits.png"></td>'
 		;
 		$('#preview #info').append('<tr>'+html+'</tr>');
 		if (i < wf.voidTrader.inventory.length-1)

@@ -321,7 +321,8 @@ body {
 }
 .vt_item {min-width: 25px; padding-right: 30px;}
 .vt_ducats {padding: 0px 5px;}
-.vt_credits {padding-left: 20px; text-align: left;}
+.vt_ducats img {vertical-align: -5px;}
+.vt_credits {padding-left: 10px; text-align: left;}
 
 
 /* ----- Events ----- */
