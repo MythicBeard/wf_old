@@ -113,9 +113,38 @@ body {
 	margin: 0px auto;
 }
 
+/* ----- Collapse ----- */
+#collapse_all {
+	height: 30px;
+	width: 50px;
+	position: absolute;
+	left: 15px;
+	top: 300px;
+	z-index: 30;
+	padding-top: 5px;
+	background: rgba(0,0,0,0.7);
+	border: 1px solid whitesmoke;
+	text-align: center;
+	cursor: pointer;
+	opacity: .7;
+}
+#expand_all {
+	height: 30px;
+	width: 50px;
+	position: absolute;
+	left: 15px;
+	top: 340px;
+	z-index: 30;
+	padding-top: 6px;
+	background: rgba(0,0,0,0.7);
+	border: 1px solid whitesmoke;
+	text-align: center;
+	cursor: pointer;
+	opacity: .7;
+}
 
 
-/* ----- To Top ----- */
+/* ----- Top / Bottom ----- */
 #to_top {
 	height: 30px;
 	width: 50px;
@@ -123,10 +152,11 @@ body {
 	right: 15px;
 	top: 300px;
 	z-index: 30;
-	background: rgba(0,0,0,0.6);
+	background: rgba(0,0,0,0.7);
 	border: 1px solid whitesmoke;
 	text-align: center;
 	cursor: pointer;
+	opacity: .7;
 }
 #to_bottom {
 	height: 30px;
@@ -135,11 +165,12 @@ body {
 	right: 15px;
 	top: 340px;
 	z-index: 30;
-	background: rgba(0,0,0,0.6);
+	background: rgba(0,0,0,0.7);
 	border: 1px solid whitesmoke;
 	text-align: center;
 	padding-top: 2px;
 	cursor: pointer;
+	opacity: .7;
 }
 
 

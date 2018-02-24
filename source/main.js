@@ -30,11 +30,17 @@ $(document).scroll(function(e) {
 var collapse_tab = function (tab) {
 	var ht = $('#'+tab).css('height');
 	if (ht === '40px') {
-		$('#'+tab).css('height', 'auto');
+		//$('#'+tab).css('height', 'auto');
+		$('#'+tab).animate({
+			height: $('#'+tab).get(0).scrollHeight
+		}, 200, function(){
+			$(this).height('auto');
+		});
 		$('#'+tab+' .collapse_tab').css('color', 'rgb(0,155,0)');
 	}
 	else {
-		$('#'+tab).css('height', '40px');
+		//$('#'+tab).css('max-height', '40px');
+		$('#'+tab).stop().animate({'height': '40px'}, 200);
 		$('#'+tab+' .collapse_tab').css('color', 'rgb(225,0,0)');
 	}
 	var audio = new Audio('source/click1.mp3');
@@ -281,9 +287,11 @@ setTimeout(function () {
 
 
 
-/* totop button */
+/* ----- Top / Bottom ----- */
 
 $(window).scroll(function(){
+	$("#collapse_all").css('top', ($(window).scrollTop()+300) + "px");
+	$("#expand_all").css('top', ($(window).scrollTop()+340) + "px");
   	$("#to_top").css('top', ($(window).scrollTop()+300) + "px");
 	$("#to_bottom").css('top', ($(window).scrollTop()+340) + "px");
 	//$('#to_top').stop().animate({'top': ($(window).scrollTop()+300) + 'px'}, 'fast');
@@ -291,21 +299,45 @@ $(window).scroll(function(){
 });
 
 function to_top() {
-    //document.body.scrollTop = 0;
-	$('html, body').animate({scrollTop: '0px'}, 'fast');
-    //document.documentElement.scrollTop = 0;
+	$('html, body').animate({scrollTop: '0px'}, 250);
+	var audio = new Audio('source/click1.mp3');
+	audio.play();
 }
 
 function to_bottom() {
-    //document.body.scrollTop = 10000;
-	$('html, body').animate({scrollTop: '10000px'}, 'slow');
-    //document.documentElement.scrollTop = 10000;
+	$('html, body').animate({scrollTop: '10000px'}, 1000);
+	var audio = new Audio('source/click1.mp3');
+	audio.play();
 }
 
 
-/* minimize all/maximize all */
-
-
+/* ----- Collapse / Expand ----- */
+var collapse_all = function () {
+	$('.info_box').each(function( index ) {
+		var id = $(this).attr('id');
+		if (id != 'conclave') {
+			//$('#'+id).css('height', '40px');
+			$('#'+id).stop().animate({'height': '40px'}, 200);
+			$('#'+id+' .collapse_tab').css('color', 'rgb(225,0,0)');
+		}
+	});
+	var audio = new Audio('source/click1.mp3');
+	audio.play();
+};
+var expand_all = function () {
+	$('.info_box').each(function( index ) {
+		var id = $(this).attr('id');
+		//$('#'+id).css('height', 'auto');
+		$('#'+id).animate({
+			height: $('#'+id).get(0).scrollHeight
+		}, 200, function(){
+			$(this).height('auto');
+		});
+		$('#'+id+' .collapse_tab').css('color', 'rgb(0,155,0)');
+	});
+	var audio = new Audio('source/click1.mp3');
+	audio.play();
+};
 
 
 

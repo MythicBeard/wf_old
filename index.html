@@ -22,12 +22,10 @@
 			<div id="refresh" onclick="refresh.toggle()"><i class="fa fa-refresh fa-lg"></i></div>
 		</div>
 	</div>
-	<div id="to_top" onclick="to_top()">
-		<i class="fa fa-angle-up fa-lg" style="font-size: 32px;"></i>
-	</div>
-	<div id="to_bottom" onclick="to_bottom()">
-		<i class="fa fa-angle-down fa-lg" style="font-size: 32px;"></i>
-	</div>
+	<div id="collapse_all" onclick="collapse_all()"><i class="fa fa-long-arrow-up fa-lg" style="font-size: 22px;"></i></div>
+	<div id="expand_all" onclick="expand_all()"><i class="fa fa-long-arrow-down fa-lg" style="font-size: 22px;"></i></div>
+	<div id="to_top" onclick="to_top()"><i class="fa fa-angle-up fa-lg" style="font-size: 32px;"></i></div>
+	<div id="to_bottom" onclick="to_bottom()"><i class="fa fa-angle-down fa-lg" style="font-size: 32px;"></i></div>
 	<div id="main">
 		<div id="sorties" class="info_box">
 			<div class="collapse_tab" onclick="collapse_tab('sorties')"><i class="fa fa-arrows-v"></i></div>
@@ -103,6 +101,7 @@
 		</div>
 		</br>
 		<div id="conclave" class="info_box">
+			<div class="collapse_tab" onclick="collapse_tab('conclave')"><i class="fa fa-arrows-v"></i></div>
 			<div class="info_title">Conclave</div>
 			<img src="source/troll.png">
 		</div>
