@@ -1,3 +1,4 @@
+var loading = true;
 /*
 if ('speechSynthesis' in window) {
  // Synthesis support. Make your web apps talk!
@@ -24,6 +25,20 @@ var scrollU = function () {
 $(document).scroll(function(e) {
 	$(window).scrollTop() > 10 ? scrollD() : scrollU();
 });
+
+
+/* ----- Collapse Tab ----- */
+var collapse_tab = function (tab) {
+	var ht = $('#'+tab).css('height');
+	if (ht === '40px') {
+		$('#'+tab).css('height', 'auto');
+		$('#'+tab+' .collapse_tab').css('color', 'rgb(0,155,0)');
+	}
+	else {
+		$('#'+tab).css('height', '40px');
+		$('#'+tab+' .collapse_tab').css('color', 'rgb(225,0,0)');
+	}
+};
 
 
 /* ----- Auto refresh ----- */
@@ -80,7 +95,6 @@ speech.say = function (phrase) {
 		msg.rate = 1.1;
 		msg.volume = .8;
 		synth.speak(msg);
-		console.log(this);
 		speech.mute = function () {
 			
 		};
@@ -127,16 +141,22 @@ speech.togglemute = function () {
 };
 
 
+
+
+
+
+
 /* ------ Tracking ----- */
 var track = {
 	'old': {
 		'alerts': {},
+		'cetusCycle': 0,
 		'fissures': {},
 		'invasions': {},
 	},
 	'tracking': {
 		'alerts': true,
-		'cetus': true,
+		'cetusCycle': true,
 		'fissures': false,
 		'invasions': false,
 	},
@@ -144,7 +164,8 @@ var track = {
 };
 
 track.alerts = function (alerts) {
-	if (!track.tracking.alerts)
+	if (!track.tracking.alerts || typeof loading != 'undefined')
+	//if (!track.tracking.alerts)
 		return;
 	for (let i=0; i<alerts.length; i++) {
 		var at = alerts[i];
@@ -170,6 +191,49 @@ track.alerts = function (alerts) {
 	}
 };
 
+track.cetusCycle = function (time, left) {
+	if (!track.tracking.cetusCycle || typeof loading != 'undefined')
+		return;
+	if (left.match('h'))
+		return;
+	var min = Number(left.replace('m', ''));
+	if (min === track.old.cetusCycle)
+		return;
+	if (min !== 15 || min !== 10 || min !== 5 || min !== 3 || min !== 1)
+		return;
+	track.old.cetusCycle = min;
+	var next;
+	if (time === 'Day')
+		next = 'night';
+	else
+		next = 'day';
+	speech.addqueue('Cetus '+next+'time in... '+min+' minutes.');
+};
+
+
+
+
+
+
+
+var toggleoption = function (opt) {
+	track.tracking[opt] = !track.tracking[opt];
+	if (track.tracking[opt]) {
+		$('#'+opt+' .sound_icon').css('color', 'rgb(0,155,0)');
+	}
+	else {
+		$('#'+opt+' .sound_icon').css('color', 'rgb(155,0,0)');
+	}
+};
+
+
+setTimeout(function () {
+	for (let key in track.tracking) {
+		if (!track.tracking[key])
+			continue;
+		$('#'+key+' .sound_icon').css('color', 'rgb(0,155,0)');
+	}
+}, 0);
 
 
 /* totop button */
@@ -212,6 +276,7 @@ $.getJSON('https://ws.warframestat.us/pc', function (data) {
 	$('#cetusCycle #sundial').html('<img src="source/time-'+cetusc.time+'.png">');
 	var cetusLeft = wf.cetusCycle.timeLeft.replace(new RegExp(" \\d+s","g"), '');
 	$('#cetusCycle #left').html(cetusLeft);
+	setTimeout(function(){track.cetusCycle(cetusc.time, cetusLeft);}, 3000);
 
 
 	// Daily Deal (Darvo) ----- */
@@ -391,6 +456,7 @@ $.getJSON('https://ws.warframestat.us/pc', function (data) {
 	
 
 	$('#header #refresh').css('color', 'rgb(0,155,0)');
+	delete loading;
 });
 };
 get_data();

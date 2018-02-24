@@ -55,7 +55,7 @@ body {
 	top: 0px;
 	left: 0px;
 	z-index: 20;
-	background: rgba(0,0,0,0.75);
+	background: rgba(0,0,0,0.8);
 	visibility: hidden;
 }
 
@@ -132,7 +132,6 @@ body {
 }
 
 #header #icons {
-	height: inherit;
 	width: 1080px;
 	position: absolute;
 	top: 30px; /* change this */
@@ -205,6 +204,7 @@ body {
 	text-align: center;
 	font-size: 16px;
 	line-height: 22px;
+	overflow: hidden;
 }
 
 .info_title {
@@ -218,6 +218,30 @@ body {
 }
 
 .double_stack {display: inline-block;}
+
+
+
+.sound_icon {
+	position: absolute;
+	left: 10px;
+	top: 5px;
+	padding: 5px;
+	cursor: pointer;
+}
+
+.collapse_tab {
+	position: absolute;
+	right: 10px;
+	top: 5px;
+	z-index: 12;
+	padding: 5px;
+	color: rgb(0,155,0);
+	font-weight: 900;
+	transition: all .1s;
+	cursor: pointer;
+	opacity: .5;
+}
+
 
 /*
 .effectScale {
@@ -252,7 +276,8 @@ body {
 /* ----- Cetus Cycle -----*/
 #cetusCycle {
 	width: 370px;
-	min-height: 90px;
+	height: 90px;
+	padding-bottom: 15px;
 	font-size: 18px;
 }
 
@@ -291,7 +316,7 @@ body {
 /* ----- Daily Deals -----*/
 #dailyDeals {
 	width: 460px;
-	min-height: 77px;
+	//min-height: 77px;
 }
 
 #dailyDeals table {

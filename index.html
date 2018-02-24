@@ -1,6 +1,6 @@
 <html>
 <head>
-	<title>Mythic Beard's Warframe API</title>
+	<title>MythicBeard's Talking Warframe Info Page</title>
 	<meta charset="UTF-8">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<link type="text/css" rel="stylesheet" href="source/main.css"/>
@@ -26,68 +26,73 @@
 	</div>
 	<div id="main">
 		<div id="sorties" class="info_box">
+			<div class="collapse_tab" onclick="collapse_tab('sorties')"><i class="fa fa-arrows-v"></i></div>
 			<div class="info_title">Sorties</div>
 			<div id="left"></div>
 		</div>	
 		<div id="cetusCycle" class="info_box">
+			<div id="sound" class="sound_icon" onclick="toggleoption('cetusCycle')"><i class="fa fa-volume-up"></i></div>
+			<div class="collapse_tab" onclick="collapse_tab('cetusCycle')"><i class="fa fa-arrows-v"></i></div>
 			<div class="info_title">Cetus</div>
 			<div id="time"></div><div id="sundial"></div><div id="left"></div>
 		</div>
 		<div id="rep" class="info_box">
+			<div class="collapse_tab" onclick="collapse_tab('rep')"><i class="fa fa-arrows-v"></i></div>
 			<div class="info_title">Reputation</div>
 			<div id="left"></div>
 		</div>	
 		</br>
 		<div id="dailyDeals" class="info_box">
+			<div class="collapse_tab" onclick="collapse_tab('dailyDeals')"><i class="fa fa-arrows-v"></i></div>
 			<div class="info_title">Daily Deals</div>
 			<table id="info" border="0"></table>
 		</div>
 		<div id="voidTrader" class="info_box">
+			<div class="collapse_tab" onclick="collapse_tab('voidTrader')"><i class="fa fa-arrows-v"></i></div>
 			<div class="info_title">Void Trader</div>
 			<span id="active"></span> <span id="left"></span><span id="open" onclick="preview_open()"></span>
 			<table id="info" border="0"></table>
-			<!--
-			</br></br>
-			Pro-tip: re-run Sands of Inaros for easy Kavat DNA.
-			</br>
-			Nuke frames break the fissure spawns,
-			</br>
-			so collect that reactant before you clear the map!
-			</br>
-			Go get those ducats!
-			</br>
-			-->
 		</div>
 		</br>
 		<div id="events" class="info_box">
+			<div class="collapse_tab" onclick="collapse_tab('events')"><i class="fa fa-arrows-v"></i></div>
 			<div class="info_title">Events</div>
 			<table id="info" border="0"></table>
 		</div>
 		</br>
 		<div id="alerts" class="info_box">
-			<div class="info_title">Alerts</div>
+			<div class="collapse_tab" onclick="collapse_tab('alerts')"><i class="fa fa-arrows-v"></i></div>
+			<div class="info_title">
+				<div id="sound" class="sound_icon" onclick="toggleoption('alerts')"><i class="fa fa-volume-up"></i></div>
+				Alerts
+			</div>
 			<table id="info" border="0"></table>
 		</div>
 		<div id="fissures" class="info_box">
+			<div class="collapse_tab" onclick="collapse_tab('fissures')"><i class="fa fa-arrows-v"></i></div>
 			<div class="info_title">Fissures</div>
 			<table id="info" border="0"></table>
 		</div>
 		</br>
 		<div id="invasions" class="info_box">
+			<div class="collapse_tab" onclick="collapse_tab('invasions')"><i class="fa fa-arrows-v"></i></div>
 			<div class="info_title">Invasions</div>
 			<table id="info" border="0"></table>
 		</div>
 		</br>
 		<div id="news" class="info_box">
+			<div class="collapse_tab" onclick="collapse_tab('news')"><i class="fa fa-arrows-v"></i></div>
 			<div class="info_title">News</div>
 			<table id="info" border="0"></table>
 		</div>
 		<div id="market" class="info_box">
+			<div class="collapse_tab" onclick="collapse_tab('market')"><i class="fa fa-arrows-v"></i></div>
 			<div class="info_title">Market</div>
 			<table id="info" border="0"></table>
 		</div>
 		</br>
 		<div id="simaris" class="info_box">
+			<div class="collapse_tab" onclick="collapse_tab('simaris')"><i class="fa fa-arrows-v"></i></div>
 			<div class="info_title">Cephalon Simaris</div>
 			<table id="info" border="0"></table>
 		</div>
