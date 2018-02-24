@@ -3,9 +3,8 @@ var loading = true;
 if ('speechSynthesis' in window) {
  // Synthesis support. Make your web apps talk!
 }
-
-if ('SpeechRecognition' in window) {
-  // Speech recognition support. Talk to your apps!
+else {
+	
 }
 */
 
@@ -96,7 +95,7 @@ speech.say = function (phrase) {
 		var msg = new SpeechSynthesisUtterance(phrase);
 		msg.voice = speech.voices[4];
 		msg.pitch = 1.1;
-		msg.rate = 1.1;
+		msg.rate = 1;
 		msg.volume = 1;
 		synth.speak(msg);
 		speech.mute = function () {
@@ -158,11 +157,41 @@ var track = {
 	'tracking': {
 		'alerts': true,
 		'cetusCycle': true,
-		'fissures': false,
+		'fissures': true,
 		'invasions': false,
 	},
 	'bad': [],
 };
+
+var cetus_alarm = {
+	43:true,
+	15:true,
+	10:true,
+	5:true,
+	3:true,
+	1:true,
+};
+track.cetusCycle = function (time, left) {
+	if (!track.tracking.cetusCycle)
+		return;
+	if (left.match('h'))
+		return;
+	var min = Number(left.replace('m', ''));
+	if (min === track.old.cetusCycle)
+		return;
+	var stop = true;
+	if (cetus_alarm[min])
+		stop = false;
+	track.old.cetusCycle = min;
+	var next;
+	if (time === 'Day')
+		next = 'night';
+	else
+		next = 'day';
+	if (loading !== true && stop !== true)
+		speech.addqueue('Cetus '+next+'time in... '+min+' minutes.');
+};
+
 
 track.alerts = function (alerts) {
 	if (!track.tracking.alerts )
@@ -180,9 +209,8 @@ track.alerts = function (alerts) {
 		track.old.alerts[at.id] = t;
 		if (at.mission.reward.itemString == '')
 			at.mission.reward.itemString = at.mission.reward.credits+' Credits';
-		console.log(loading);
 		if (loading !== true)
-			speech.addqueue('On alert is... '+at.mission.reward.itemString);
+			speech.addqueue('Mission alert ... '+at.mission.reward.itemString);
 	}
 	for (let key in track.old.alerts) {
 		var d = new Date();
@@ -193,27 +221,32 @@ track.alerts = function (alerts) {
 	}
 };
 
-track.cetusCycle = function (time, left) {
-	if (!track.tracking.cetusCycle)
+
+track.fissures = function (fissures) {
+	if (!track.tracking.fissures)
 		return;
-	if (left.match('h'))
-		return;
-	var min = Number(left.replace('m', ''));
-	if (min === track.old.cetusCycle)
-		return;
-	if (min !== 15 || min !== 10 || min !== 5 || min !== 3 || min !== 1)
-		return;
-	track.old.cetusCycle = min;
-	var next;
-	if (time === 'Day')
-		next = 'night';
-	else
-		next = 'day';
-	if (loading !== false) speech.addqueue('Cetus '+next+'time in... '+min+' minutes.');
+	for (let i=0; i<fissures.length; i++) {
+		var fs = fissures[i];
+		if (track.old.fissures[fs.id])
+			continue;
+		if (fs.expired) {
+			delete track.old.fissures[fs.id];
+			continue;
+		}
+		var d = new Date();
+		var t = d.getTime();
+		track.old.fissures[fs.id] = t;
+		if (loading !== true)
+			speech.addqueue('Void fissure ... T'+fs.tierNum+' '+fs.missionType);
+	}
+	for (let key in track.old.fissures) {
+		var d = new Date();
+		var t = d.getTime();
+		var diff = t-Number(track.old.fissures[key]);
+		if (diff > 3600000)
+			delete track.old.fissures[key];
+	}
 };
-
-
-
 
 
 
@@ -250,9 +283,24 @@ setTimeout(function () {
 
 /* totop button */
 
+$(window).scroll(function(){
+  	$("#to_top").css('top', ($(window).scrollTop()+300) + "px");
+	$("#to_bottom").css('top', ($(window).scrollTop()+340) + "px");
+	//$('#to_top').stop().animate({'top': ($(window).scrollTop()+300) + 'px'}, 'fast');
+	//$('#to_bottom').stop().animate({'top': ($(window).scrollTop()+340) + 'px'}, 'fast');
+});
 
+function to_top() {
+    //document.body.scrollTop = 0;
+	$('html, body').animate({scrollTop: '0px'}, 'fast');
+    //document.documentElement.scrollTop = 0;
+}
 
-
+function to_bottom() {
+    //document.body.scrollTop = 10000;
+	$('html, body').animate({scrollTop: '10000px'}, 'slow');
+    //document.documentElement.scrollTop = 10000;
+}
 
 
 /* minimize all/maximize all */
@@ -292,12 +340,16 @@ $.getJSON('https://ws.warframestat.us/pc', function (data) {
 		'Day': 'rgb(255,255,0)',
 		'Night': 'rgb(0,125,255)'
 	};
-	if (wf.cetusCycle.isDay) cetusc.time = 'Day'; else cetusc.time = 'Night';
+	if (wf.cetusCycle.isDay)
+		cetusc.time = 'Day';
+	else 
+		cetusc.time = 'Night';
 	$('#cetusCycle #time').html(cetusc.time);
 	$('#cetusCycle #sundial').html('<img src="source/time-'+cetusc.time+'.png">');
 	var cetusLeft = wf.cetusCycle.timeLeft.replace(new RegExp(" \\d+s","g"), '');
 	$('#cetusCycle #left').html(cetusLeft);
-	setTimeout(function(){track.cetusCycle(cetusc.time, cetusLeft);}, 3000);
+	
+	setTimeout(function(){ track.cetusCycle(cetusc.time, cetusLeft); }, 3000);
 
 
 	// Daily Deal (Darvo) ----- */
@@ -386,14 +438,14 @@ $.getJSON('https://ws.warframestat.us/pc', function (data) {
 	for (let i=0; i<wf.fissures.length; i++) {
 		var fiss = wf.fissures[i];
 		fisses[fiss.tier].push({
-			'tier': fiss.tier,
+			'tier': fiss.tierNum,
 			'type': fiss.missionType,
 			'eta': fiss.eta.replace(new RegExp("\\d+s","g"), ''),
 			'node': fiss.node.replace(' (', ', ').replace(')', ''),
 		})
 	}
 	var show_fiss = function (fiss) {
-		let html = '<td class="fs_tier">'+fiss.tier+'</td>'
+		let html = '<td class="fs_tier">T'+fiss.tier+'</td>'
 			+ '<td class="fs_type">'+fiss.type+'</td>'
 			+ '<td class="fs_eta">'+fiss.eta+'</td>'
 			+ '<td class="fs_node">'+fiss.node+'</td>'
@@ -407,6 +459,8 @@ $.getJSON('https://ws.warframestat.us/pc', function (data) {
 	for (let i=0; i<fisses.Neo.length; i++) show_fiss(fisses.Neo[i]);
 	$('#fissures #info').append('<tr class="fs_spacer"><td colspan="4"</tr>');
 	for (let i=0; i<fisses.Axi.length; i++) show_fiss(fisses.Axi[i]);
+	
+	setTimeout(function() {track.fissures(wf.fissures);}, 1500);
 
 
 	/* ----- Invasions ----- */
@@ -481,7 +535,7 @@ $.getJSON('https://ws.warframestat.us/pc', function (data) {
 	/* ----- Finish ----- */
 	$('#header #refresh').css('color', 'rgb(0,155,0)');
 	if (loading !== false)
-		setTimeout(function () { loading = false; console.log(loading);	}, 9000);
+		setTimeout(function () { loading = false; }, 9000);
 });
 };
 get_data();

@@ -109,8 +109,39 @@ body {
 #wrap {
 	min-width: 1200px;
 	min-height: 100%;
+	position: relative;
 	margin: 0px auto;
 }
+
+
+
+/* ----- To Top ----- */
+#to_top {
+	height: 30px;
+	width: 50px;
+	position: absolute;
+	right: 15px;
+	top: 300px;
+	z-index: 30;
+	background: rgba(0,0,0,0.6);
+	border: 1px solid whitesmoke;
+	text-align: center;
+	cursor: pointer;
+}
+#to_bottom {
+	height: 30px;
+	width: 50px;
+	position: absolute;
+	right: 15px;
+	top: 340px;
+	z-index: 30;
+	background: rgba(0,0,0,0.6);
+	border: 1px solid whitesmoke;
+	text-align: center;
+	padding-top: 2px;
+	cursor: pointer;
+}
+
 
 
 /* Header */
@@ -414,7 +445,7 @@ body {
 }
 
 .fs_tier {
-	width: 50px;
+	width: 30px;
 	text-align: center;
 }
 
