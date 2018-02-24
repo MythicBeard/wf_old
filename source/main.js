@@ -102,7 +102,13 @@ speech.say = function (phrase) {
 		msg.voice = speech.voices[4];
 		msg.pitch = 1.1;
 		msg.rate = 1;
-		msg.volume = 1;
+		var vol = ($('#volume').val())/100;
+		if (vol > 1)
+			vol = 1;
+		else if (vol < 0)
+			vol = 0;
+		console.log(vol);
+		msg.volume = vol;
 		synth.speak(msg);
 		speech.mute = function () {
 			
@@ -446,6 +452,8 @@ $.getJSON('https://ws.warframestat.us/pc', function (data) {
 	/* ----- Alerts ----- */
 	$('#alerts #info tr').remove();
 	for (let i=0; i<wf.alerts.length; i++) {
+		if (wf.alerts[i].expired === true)
+			continue;
 		var alr = {};
 		alr.icon_class = 'thumb effectScale';
 		alr.icon = '<td class="al_icon"><img class="'+alr.icon_class+'" src="'+wf.alerts[i].mission.reward.thumbnail+'" alt=""></td>';
