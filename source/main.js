@@ -1,5 +1,59 @@
+/*
+if ('speechSynthesis' in window) {
+ // Synthesis support. Make your web apps talk!
+}
+
+if ('SpeechRecognition' in window) {
+  // Speech recognition support. Talk to your apps!
+}
+*/
+
+/* ----- Header shrink ----- */
+var scrollD = function () {
+	$('#header').css('height', '40px').css('padding-top', '3px').css('font-size', '20px');
+	$('#header #icons').css('top', '10px');
+	$('#header img').css('height', '30px');
+};
+
+var scrollU = function () {
+	$('#header').css('height', '80px').css('padding-top', '25px').css('font-size', '24px');
+	$('#header #icons').css('top', '29px');
+	$('#header img').css('height', '40px');
+};
+
+$(document).scroll(function(e) {
+	$(window).scrollTop() > 10 ? scrollD() : scrollU();
+});
+
+
+/* ----- Auto refresh ----- */
+var refresh = {};
+refresh.start = function () {
+	refresh.interval = setInterval(function(){get_data();}, 10000);
+	$('#header #refresh').css('color', 'rgb(0,155,0)');
+	refresh.on = true;
+};
+refresh.start();
+
+refresh.stop = function () {
+	clearInterval(refresh.interval);
+	$('#header #refresh').css('color', 'rgb(155,0,0)');
+	refresh.on = false;
+};
+
+refresh.toggle = function () {
+	if (refresh.on)
+		refresh.stop();
+	else {
+		get_data();
+		refresh.start();
+	}
+};
+
+
 /* ----- Speech ----- */
 var speech = {
+	'on': true,
 	'queue': {},
 };
 speech.voices = window.speechSynthesis.getVoices();
@@ -12,17 +66,24 @@ speech.settings = {
 };
 	
 speech.say = function (phrase) {
+	if (!speech.on)
+		return;
 	var synth = window.speechSynthesis;
 	speech.voices = window.speechSynthesis.getVoices();
 	var voice = setInterval(function() {
 		if (!speech.voices || speech.voices.length == 0)
 			return;
+		
 		var msg = new SpeechSynthesisUtterance(phrase);
 		msg.voice = speech.voices[4];
 		msg.pitch = 1.1;
 		msg.rate = 1.1;
 		msg.volume = .8;
 		synth.speak(msg);
+		console.log(this);
+		speech.mute = function () {
+			
+		};
 		clearInterval(voice)
 	}, 200);	
 };
@@ -33,7 +94,8 @@ speech.next = function () {
 		phrase = key;
 		break;
 	}
-	speech.say(phrase);
+	if (speech.on)
+		speech.say(phrase);
 	delete speech.queue[phrase];	
 	var total = Object.keys(speech.queue).length;
 	if (total !== 0)
@@ -43,11 +105,25 @@ speech.next = function () {
 };
 
 speech.addqueue = function (phrase) {
+	if (!speech.on)
+		return;
 	speech.queue[phrase] = true;
 	if (speech.interval) 
 		return;
 	speech.next();
 	speech.interval = setInterval(speech.next, 3000);
+};
+
+speech.togglemute = function () {
+	speech.on = !speech.on;
+	if (speech.on) {
+		$('#header #sound').css('color', 'rgb(0,155,0)');
+	}
+	else {
+		window.speechSynthesis.cancel();
+		speech.queue = {};
+		$('#header #sound').css('color', 'rgb(155,0,0)');
+	}
 };
 
 
@@ -64,15 +140,43 @@ var track = {
 		'fissures': false,
 		'invasions': false,
 	},
+	'bad': [],
 };
 
 track.alerts = function (alerts) {
-	console.log(alerts);
+	if (!track.tracking.alerts)
+		return;
+	for (let i=0; i<alerts.length; i++) {
+		var at = alerts[i];
+		if (track.old.alerts[at.id])
+			continue;
+		if (at.expired) {
+			delete track.old.alerts[key];
+			continue;
+		}
+		var d = new Date();
+		var t = d.getTime();
+		track.old.alerts[at.id] = t;
+		if (at.mission.reward.itemString == '')
+			at.mission.reward.itemString = at.mission.reward.credits+' Credits';
+		speech.addqueue('On alert is... '+at.mission.reward.itemString);
+	}
+	for (let key in track.old.alerts) {
+		var d = new Date();
+		var t = d.getTime();
+		var diff = t-Number(track.old.alerts[key]);
+		if (diff > 3600000)
+			delete track.old.alerts[key];
+	}
 };
 
 
 
 /* totop button */
+
+
+
+
 
 /* ---- Load Everything ----- */
 var get_data = function () {
@@ -81,7 +185,7 @@ var wf = {};
 $.getJSON('https://ws.warframestat.us/pc', function (data) {
 	wf = data;
 	
-	// Sorties
+	/* ----- Sorties ----- */
 	var sortie = {
 		'hr': wf.sortie.eta.match(new RegExp("\\d+h")),
 	};
@@ -94,10 +198,11 @@ $.getJSON('https://ws.warframestat.us/pc', function (data) {
 	$('#sorties #left').html(sortie.hr+'h '+sortie.mn+'m');
 	
 	
-	// Rep
+	/* ----- Rep ----- */
 	$('#rep #left').html((sortie.hr+7)+'h '+sortie.mn+'m');
-	
-	// Cetus Cycle
+
+
+	/* ----- Cetus Cycle ----- */
 	var cetusc = {
 		'Day': 'rgb(255,255,0)',
 		'Night': 'rgb(0,125,255)'
@@ -109,7 +214,7 @@ $.getJSON('https://ws.warframestat.us/pc', function (data) {
 	$('#cetusCycle #left').html(cetusLeft);
 
 
-	// Daily Deal (Darvo)
+	// Daily Deal (Darvo) ----- */
 	let darvos = wf.dailyDeals;
 	$('#dailyDeals #info tr').remove();
 	for (let i=0; i<darvos.length; i++) {
@@ -122,9 +227,8 @@ $.getJSON('https://ws.warframestat.us/pc', function (data) {
 	}
 
 
-	// Void Trader (Baro)
+	/* ----- Void Trader (Baro) ----- */
 	var vt = {};
-	console.log(wf.voidTrader);
 	if (wf.voidTrader.active) {
 		vt.active = ''; 
 		vt.left = wf.voidTrader.endString.replace(new RegExp("\\d+s","g"), '');
@@ -153,7 +257,7 @@ $.getJSON('https://ws.warframestat.us/pc', function (data) {
 	
 
 
-	// Events
+	/* ----- Events ----- */
 	$('#events #info tr').remove();
 	for (let i=0; i<wf.events.length; i++) {
 		var evt = {};
@@ -169,7 +273,7 @@ $.getJSON('https://ws.warframestat.us/pc', function (data) {
 	}
 	
 
-	// Alerts
+	/* ----- Alerts ----- */
 	$('#alerts #info tr').remove();
 	for (let i=0; i<wf.alerts.length; i++) {
 		var alr = {};
@@ -182,10 +286,10 @@ $.getJSON('https://ws.warframestat.us/pc', function (data) {
 		if (i < wf.alerts.length-1)
 			$('#alerts #info').append('<tr class="al_spacer"><td colspan="3"></td></tr>');
 	}
-	track.alerts(wf.alerts);
+	setTimeout(function() {track.alerts(wf.alerts);}, 2000);
 
 
-	// Fissures
+	/* ----- Fissures ----- */
 	$('#fissures #info tr').remove();
 	var fisses = {
 		'Lith': [],
@@ -219,7 +323,7 @@ $.getJSON('https://ws.warframestat.us/pc', function (data) {
 	for (let i=0; i<fisses.Axi.length; i++) show_fiss(fisses.Axi[i]);
 
 
-	// Invasions
+	/* ----- Invasions ----- */
 	$('#invasions #info tr').remove();
 	for (let i=0; i<wf.invasions.length; i++) {
 		var inv = {};
@@ -241,7 +345,7 @@ $.getJSON('https://ws.warframestat.us/pc', function (data) {
 	}
 	
 	
-	// News
+	/* ----- News ----- */
 	$('#news #info tr').remove();
 	for (let i=wf.news.length-1; i>=0; i--) {
 		var news = {
@@ -254,7 +358,7 @@ $.getJSON('https://ws.warframestat.us/pc', function (data) {
 	}
 	
 	
-	// Market
+	/* ----- Market ----- */
 	$('#market #info tr').remove();
 	for (let i=0; i<wf.flashSales.length; i++) {
 		var sale = {
@@ -272,7 +376,7 @@ $.getJSON('https://ws.warframestat.us/pc', function (data) {
 	}		
 
 
-	// Cephalon Simaris
+	/* ----- Cephalon Simaris ----- */
 	$('#simaris #info tr').remove();
 	var simar = {
 		'target': wf.simaris.target,
@@ -306,45 +410,5 @@ $(document).keydown(function(e) {
 });
 
 
-// Header shrink
-var scrollD = function () {
-	$('#header').css('height', '40px').css('padding-top', '3px').css('font-size', '20px');
-	$('#header #icons').css('top', '10px');
-	$('#header img').css('height', '30px');
-};
 
-var scrollU = function () {
-	$('#header').css('height', '80px').css('padding-top', '25px').css('font-size', '24px');
-	$('#header #icons').css('top', '29px');
-	$('#header img').css('height', '40px');
-};
-
-$(document).scroll(function(e) {
-	$(window).scrollTop() > 10 ? scrollD() : scrollU();
-});
-
-
-// Auto refresh
-var refresh = {};
-refresh.start = function () {
-	refresh.interval = setInterval(function(){get_data();}, 30000);
-	$('#header #refresh').css('color', 'rgb(0,105,0)');
-	refresh.on = true;
-};
-refresh.start();
-
-refresh.stop = function () {
-	clearInterval(refresh.interval);
-	$('#header #refresh').css('color', 'rgb(155,0,0)');
-	refresh.on = false;
-};
-
-refresh.toggle = function () {
-	if (refresh.on)
-		refresh.stop();
-	else {
-		get_data();
-		refresh.start();
-	}
-};
 
