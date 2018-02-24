@@ -49,9 +49,14 @@ var collapse_tab = function (tab) {
 
 
 /* ----- Auto refresh ----- */
-var refresh = {};
+
+var refresh = {
+	'rate': 30,
+};
 refresh.start = function () {
-	refresh.interval = setInterval(function(){get_data();}, 10000);
+	var rate = refresh.rate*1000;
+	clearInterval(refresh.interval);
+	refresh.interval = setInterval(function(){get_data();}, rate);
 	$('#header #refresh').css('color', 'rgb(0,155,0)');
 	refresh.on = true;
 };
@@ -73,6 +78,17 @@ refresh.toggle = function () {
 	var audio = new Audio('source/click1.mp3');
 	audio.play();
 };
+
+setTimeout(function(){
+	$('#rrate').on('input',function(e){
+		refresh.rate = $('#rrate').val();
+		if (refresh.rate == '')
+			refresh.rate = 30;
+		if (refresh.rate < 5)
+			refresh.rate = 5;
+		refresh.start();
+	});
+}, 100);
 
 
 /* ----- Speech ----- */
@@ -102,12 +118,17 @@ speech.say = function (phrase) {
 		msg.voice = speech.voices[4];
 		msg.pitch = 1.1;
 		msg.rate = 1;
-		var vol = ($('#volume').val())/100;
+		var vol;
+		if (vol !== '')
+			vol = ($('#volume').val())/100;
+		else {
+			$('#volume').val(0);
+			vol = 0;
+		}
 		if (vol > 1)
 			vol = 1;
-		else if (vol < 0)
+		else if (vol < 0.00)
 			vol = 0;
-		console.log(vol);
 		msg.volume = vol;
 		synth.speak(msg);
 		speech.mute = function () {
@@ -176,7 +197,6 @@ var track = {
 };
 
 var cetus_alarm = {
-	43:true,
 	15:true,
 	10:true,
 	5:true,
@@ -306,14 +326,10 @@ $(window).scroll(function(){
 
 function to_top() {
 	$('html, body').animate({scrollTop: '0px'}, 250);
-	var audio = new Audio('source/click1.mp3');
-	audio.play();
 }
 
 function to_bottom() {
 	$('html, body').animate({scrollTop: '10000px'}, 1000);
-	var audio = new Audio('source/click1.mp3');
-	audio.play();
 }
 
 

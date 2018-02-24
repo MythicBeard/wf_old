@@ -10,6 +10,14 @@ html {
     overflow-y: scroll;
 }
 
+/* Nix focused input outline */
+textarea:focus, input:focus{
+    outline: none;
+}
+*:focus {
+    outline: none;
+}
+
 /* Nix the mobile "smart" resizing */
 div, p, a, ul, li, tr, td, img {
 	-webkit-text-size-adjust:none !important;
@@ -245,7 +253,7 @@ body {
 	position: relative;
 	bottom: 0px;
 	height: 80px;
-	padding: 15px 0px;
+	padding: 10px 0px;
 	width: 100%;
 	margin: 90px auto 0px;
 	background: rgba(0,0,0,0.8);
@@ -294,22 +302,35 @@ body {
 }
 
 #volume {
-	width: 45px;
+	width: 50px;
 	height: 25px;
 	position: absolute;
 	top: -1px;
 	left: 90px;
 	//border: 1px solid darkgrey;
 	border: 0;
-	background: black;
+	background: rgba(0,0,0,0);
 	color: white;
 	font-size: 16px;
-	cursor: pointer;
 }
+#rrate {
+	width: 50px;
+	height: 25px;
+	position: absolute;
+	top: -1px;
+	right: 90px;
+	//border: 1px solid darkgrey;
+	border: 0;
+	background: rgba(0,0,0,0);
+	color: white;
+	font-size: 16px;
+}
+
 input[type=number]::-webkit-inner-spin-button, 
 input[type=number]::-webkit-outer-spin-button {  
 	opacity: 1;
 	height:20px;
+	cursor: pointer;
 }
 
 

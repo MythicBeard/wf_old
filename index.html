@@ -19,7 +19,8 @@
 		MythicBeard's Talking &nbsp;<img src="source/logo-beard.png">&nbsp; Warframe Info Page! &nbsp;&nbsp;
 		<div id="icons">
 			<div id="sound" onclick="speech.togglemute()"><i class="fa fa-volume-up fa-lg"></i></div>
-			<input id="volume" type="number" name="volume" min="1" max="100" value="100" dir="ltl">
+			<input id="volume" type="number" name="volume" min="1" max="100" value="100" dir="ltl" onClick="this.select();">
+			<input id="rrate" type="number" name="rrate" min="1" max="1000" value="30" dir="rtl" onClick="this.select();">
 			
 			<div id="refresh" onclick="refresh.toggle()"><i class="fa fa-refresh fa-lg"></i></div>
 		</div>
@@ -115,7 +116,7 @@
 	
 	<div id="footer">
 		<div id="info">
-			<span style="font-weight: 900;">If you enjoy this non-profit fansite, consider donating an in-game item to MythicBeard!</span>
+			<span style="font-weight: 900; font-size: 16px;">If you enjoy this non-profit fansite, consider donating an in-game item to MythicBeard!</span>
 			</br>
 			Data is automatically mined from Warframe's API at <a href="https://ws.warframestat.us/pc" target="_blank">https://ws.warframestat.us/pc</a>
 			</br>
