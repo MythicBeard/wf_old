@@ -38,6 +38,8 @@ var collapse_tab = function (tab) {
 		$('#'+tab).css('height', '40px');
 		$('#'+tab+' .collapse_tab').css('color', 'rgb(225,0,0)');
 	}
+	var audio = new Audio('source/click1.mp3');
+	audio.play();
 };
 
 
@@ -63,6 +65,8 @@ refresh.toggle = function () {
 		get_data();
 		refresh.start();
 	}
+	var audio = new Audio('source/click1.mp3');
+	audio.play();
 };
 
 
@@ -93,7 +97,7 @@ speech.say = function (phrase) {
 		msg.voice = speech.voices[4];
 		msg.pitch = 1.1;
 		msg.rate = 1.1;
-		msg.volume = .8;
+		msg.volume = 1;
 		synth.speak(msg);
 		speech.mute = function () {
 			
@@ -138,12 +142,9 @@ speech.togglemute = function () {
 		speech.queue = {};
 		$('#header #sound').css('color', 'rgb(155,0,0)');
 	}
+	var audio = new Audio('source/click1.mp3');
+	audio.play();
 };
-
-
-
-
-
 
 
 /* ------ Tracking ----- */
@@ -164,15 +165,14 @@ var track = {
 };
 
 track.alerts = function (alerts) {
-	if (!track.tracking.alerts || typeof loading != 'undefined')
-	//if (!track.tracking.alerts)
+	if (!track.tracking.alerts )
 		return;
 	for (let i=0; i<alerts.length; i++) {
 		var at = alerts[i];
 		if (track.old.alerts[at.id])
 			continue;
 		if (at.expired) {
-			delete track.old.alerts[key];
+			delete track.old.alerts[at.id];
 			continue;
 		}
 		var d = new Date();
@@ -180,7 +180,9 @@ track.alerts = function (alerts) {
 		track.old.alerts[at.id] = t;
 		if (at.mission.reward.itemString == '')
 			at.mission.reward.itemString = at.mission.reward.credits+' Credits';
-		speech.addqueue('On alert is... '+at.mission.reward.itemString);
+		console.log(loading);
+		if (loading !== true)
+			speech.addqueue('On alert is... '+at.mission.reward.itemString);
 	}
 	for (let key in track.old.alerts) {
 		var d = new Date();
@@ -192,7 +194,7 @@ track.alerts = function (alerts) {
 };
 
 track.cetusCycle = function (time, left) {
-	if (!track.tracking.cetusCycle || typeof loading != 'undefined')
+	if (!track.tracking.cetusCycle)
 		return;
 	if (left.match('h'))
 		return;
@@ -207,7 +209,7 @@ track.cetusCycle = function (time, left) {
 		next = 'night';
 	else
 		next = 'day';
-	speech.addqueue('Cetus '+next+'time in... '+min+' minutes.');
+	if (loading !== false) speech.addqueue('Cetus '+next+'time in... '+min+' minutes.');
 };
 
 
@@ -224,6 +226,8 @@ var toggleoption = function (opt) {
 	else {
 		$('#'+opt+' .sound_icon').css('color', 'rgb(155,0,0)');
 	}
+	var audio = new Audio('source/click1.mp3');
+	audio.play();
 };
 
 
@@ -236,7 +240,24 @@ setTimeout(function () {
 }, 0);
 
 
+
+
+
+
+
+
+
+
 /* totop button */
+
+
+
+
+
+
+/* minimize all/maximize all */
+
+
 
 
 
@@ -397,10 +418,13 @@ $.getJSON('https://ws.warframestat.us/pc', function (data) {
 		inv.node = wf.invasions[i].node.replace(' (', ', ').replace(')', ' (');
 		inv.node = inv.node+''+inv.prog+'%)';
 		inv.atk_reward = wf.invasions[i].attackerReward.asString.replace('Mutalist ', '').replace('Blueprint', 'BP').replace(' Coordinate', '').replace(' Injector', '').replace(' Mass', '');
-		if (wf.invasions[i].attackerReward.asString == '') inv.a_thumb = ''; else inv.a_thumb = wf.invasions[i].attackerReward.thumbnail;
+		if (wf.invasions[i].attackerReward.asString == '')
+			inv.a_thumb = 'source/credits.png'; 
+		else 
+			inv.a_thumb = wf.invasions[i].attackerReward.thumbnail;
 		inv.def_reward = wf.invasions[i].defenderReward.asString.replace('Mutalist ', '').replace('Blueprint', 'BP').replace(' Coordinate', '').replace(' Injector', '').replace(' Mass', '');
 		inv.reward = '<td class="inv_reward inv_'+wf.invasions[i].defendingFaction+'">'
-			+ '<div class="inv_atk"><img src="'+inv.a_thumb+'" onerror="this.style.display=\'none\'" alt="">'+inv.atk_reward+'</div>'
+			+ '<div class="inv_atk"><img src="'+inv.a_thumb+'" onerror="this.style.display=\'none\'" alt="" style="height: 15px;">'+inv.atk_reward+'</div>'
 			+ '<div class="inv_node">'+inv.node+'</div>'
 			+ '<div class="inv_def">'+inv.def_reward+'<img src="'+wf.invasions[i].defenderReward.thumbnail+'" onerror="this.style.display=\'none\'" alt=""></div>'
 			+ '<div id="inv_'+wf.invasions[i].id+'" class="inv_prog"></div></td>'
@@ -454,9 +478,10 @@ $.getJSON('https://ws.warframestat.us/pc', function (data) {
 	$('#simaris #info').append('<tr>'+simar.html+'</tr>');
 
 	
-
+	/* ----- Finish ----- */
 	$('#header #refresh').css('color', 'rgb(0,155,0)');
-	delete loading;
+	if (loading !== false)
+		setTimeout(function () { loading = false; console.log(loading);	}, 9000);
 });
 };
 get_data();

@@ -457,7 +457,7 @@ body {
 	box-shadow: 0px 0px 2px black;
 }
 
-#invasions img {padding: 0px 2px; width: 30px;}
+#invasions img {padding: 0px 2px; height: 15px;}
 
 .inv_prog {
 	position: absolute;
